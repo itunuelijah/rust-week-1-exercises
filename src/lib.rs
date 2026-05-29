@@ -92,8 +92,8 @@ pub fn find_high_fee(fee_list: &[f64]) -> Option<(usize, f64)> {
 /// Return basic wallet details as a tuple of (name, balance).
 pub fn get_wallet_details() -> (String, f64) {
     // TODO: Return a tuple with wallet name and balance
-    let name = String::from("IT wallet");
-    let balance = 466000.0;
+    let name = String::from("satoshi_wallet");
+    let balance = 50.0;
     (name, balance)
 }
 
@@ -150,11 +150,15 @@ pub fn validate_block_height(height: i64) -> (bool, String) {
     // TODO: Check that height is not negative
     // TODO: Check that height is within a realistic range (<= 1_000_000)
     // TODO: Return (true, "Valid block height") otherwise
-    let mut is_valid = false;
-    let mut message = String::from("Invalid block height");
-    if height >= 0 && height <= 1_000_000 {
-        is_valid = true;
-        message = String::from("Valid block height");
+    let mut is_valid = true;
+    let mut message = String::from("Valid block height");
+    if height < 0 {
+        is_valid = false;
+        message = String::from("Negative block height");
+    }
+    else if height > 1_000_000 {
+        is_valid = false;
+        message = String::from("Unrealistic block height");
     }
     (is_valid, message)
 }
@@ -215,14 +219,16 @@ pub fn create_utxo(
 
     base_map
 }
-
 // Implement extract_tx_version function below
 pub fn extract_tx_version(raw_tx_hex: &str) -> Result<u32, String> {
     if raw_tx_hex.len() < 8 {
-        return Err("Transaction hex is lesser than 8".to_string());
+        return Err("Transaction data too short".to_string());
     }
     let tx_version = &raw_tx_hex[0..8];
 
-    u32::from_str_radix(tx_version, 16)
-        .map_err(|_| "An error occured. Failed to convert".to_string())
+   match u32::from_str_radix(tx_version, 16) {
+        Ok(v) => Ok(v),
+        Err(_) => Err("Hex decode error".to_string()),
+    }
 }
+
