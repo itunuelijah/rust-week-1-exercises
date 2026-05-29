@@ -155,8 +155,7 @@ pub fn validate_block_height(height: i64) -> (bool, String) {
     if height < 0 {
         is_valid = false;
         message = String::from("Negative block height");
-    }
-    else if height > 1_000_000 {
+    } else if height > 1_000_000 {
         is_valid = false;
         message = String::from("Unrealistic block height");
     }
@@ -226,9 +225,8 @@ pub fn extract_tx_version(raw_tx_hex: &str) -> Result<u32, String> {
     }
     let tx_version = &raw_tx_hex[0..8];
 
-   match u32::from_str_radix(tx_version, 16) {
+    match u32::from_str_radix(tx_version, 16) {
         Ok(v) => Ok(v),
         Err(_) => Err("Hex decode error".to_string()),
     }
 }
-
