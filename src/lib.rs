@@ -73,7 +73,7 @@ pub fn normalize_address(address: &str) -> String {
 }
 
 /// Append a new UTXO to the list and return the updated list.
-pub fn add_utxo(utxos: Vec<Utxo>, new_utxo: Utxo) -> Vec<Utxo> {
+pub fn add_utxo(mut utxos: Vec<Utxo>, new_utxo: Utxo) -> Vec<Utxo> {
     // TODO: Push new_utxo into utxos and return it
     utxos.push(new_utxo);
     utxos
