@@ -1,3 +1,4 @@
+use rand::Rng;
 use std::collections::HashMap;
 
 // Name Assignment (variables and constants)
@@ -125,7 +126,6 @@ pub fn calculate_sats(btc: f64) -> u64 {
 pub fn generate_address(prefix: &str) -> String {
     // TODO: Build a random suffix of (32 - prefix.len()) chars from [a-z0-9]
     // TODO: Concatenate prefix + suffix and return
-    let suffix = random(32 - prefix.len())[a - z0 - 9];
 
     let mut rang = rand::thread_rng();
     let mut suffix = String::new();
@@ -152,7 +152,7 @@ pub fn validate_block_height(height: i64) -> (bool, String) {
     // TODO: Return (true, "Valid block height") otherwise
     let mut is_valid = false;
     let mut message = String::from("Invalid block height");
-    if (height >= 0 && height <= 1_000_000) {
+    if height >= 0 && height <= 1_000_000 {
         is_valid = true;
         message = String::from("Valid block height");
     }
@@ -195,8 +195,7 @@ pub fn find_utxo_with_min_value(utxos: &[Utxo], target: u64) -> Option<Utxo> {
             }
         }
     }
-
-    smallest
+    smallest.cloned()
 }
 
 /// Create a UTXO map from txid, vout, and arbitrary extra string fields.
